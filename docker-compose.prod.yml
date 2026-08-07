@@ -22,11 +22,10 @@ services:
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
-    # 对外端口已屏蔽，防止与云服务器面板上已安装的 MinIO (9001) 端口冲突。
-    # Milvus 向量库在 Docker 内部网络通过 minio:9000 进行通信，不受影响。
-    # ports:
-    #   - "127.0.0.1:19000:9000"
-    #   - "127.0.0.1:19001:9001"
+    # 对外端口映射为 19000 (API) 与 19001 (Console)，避免与云服务器面板上已有的 9001 端口冲突。
+    ports:
+      - "127.0.0.1:19000:9000"
+      - "127.0.0.1:19001:9001"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
     command: minio server /minio_data --console-address ":9001"
