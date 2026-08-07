@@ -1,35 +1,4 @@
 services:
-  postgres:
-    container_name: supermew-postgres
-    image: postgres:15
-    environment:
-      POSTGRES_DB: langchain_app
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/postgres:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d langchain_app"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  redis:
-    container_name: supermew-redis
-    image: redis:7-alpine
-    command: ["redis-server", "--appendonly", "yes"]
-    ports:
-      - "127.0.0.1:6379:6379"
-    volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/redis:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
   etcd:
     container_name: supermew-milvus-etcd
     image: quay.io/coreos/etcd:v3.5.18
@@ -53,9 +22,11 @@ services:
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
-    ports:
-      - "127.0.0.1:9000:9000"
-      - "127.0.0.1:9001:9001"
+    # 对外端口已屏蔽，防止与云服务器面板上已安装的 MinIO (9001) 端口冲突。
+    # Milvus 向量库在 Docker 内部网络通过 minio:9000 进行通信，不受影响。
+    # ports:
+    #   - "127.0.0.1:19000:9000"
+    #   - "127.0.0.1:19001:9001"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
     command: minio server /minio_data --console-address ":9001"
@@ -104,3 +75,4 @@ services:
 networks:
   default:
     name: supermew
+
