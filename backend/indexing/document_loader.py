@@ -210,6 +210,13 @@ class DocumentLoader:
 
             raw_docs = load_html_for_document_loader(file_path, filename)
             return self._load_from_langchain_docs(raw_docs, file_path, filename, doc_type)
+        elif file_lower.endswith((".txt", ".md")):
+            doc_type = "Markdown" if file_lower.endswith(".md") else "Text"
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+            from langchain_core.documents import Document
+            raw_docs = [Document(page_content=content, metadata={"page": 1})]
+            return self._load_from_langchain_docs(raw_docs, file_path, filename, doc_type)
         else:
             raise ValueError(f"不支持的文件类型: {filename}")
 
@@ -218,6 +225,12 @@ class DocumentLoader:
             return self._load_from_langchain_docs(raw_docs, file_path, filename, doc_type)
         except Exception as e:
             raise Exception(f"处理文档失败: {str(e)}") from e
+
+    def load_text(self, text: str, filename: str = "test.txt", doc_type: str = "Text") -> list[dict]:
+        """对纯文本字符串进行多层级切片"""
+        from langchain_core.documents import Document
+        raw_docs = [Document(page_content=text, metadata={"page": 1})]
+        return self._load_from_langchain_docs(raw_docs, filename, filename, doc_type)
 
     def load_documents_from_folder(self, folder_path: str) -> list[dict]:
         all_documents = []
@@ -229,6 +242,7 @@ class DocumentLoader:
                 or file_lower.endswith((".docx", ".doc"))
                 or file_lower.endswith((".xlsx", ".xls"))
                 or file_lower.endswith((".html", ".htm"))
+                or file_lower.endswith((".txt", ".md"))
             ):
                 continue
 

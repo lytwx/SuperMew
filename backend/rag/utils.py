@@ -298,7 +298,8 @@ def _rerank_documents(query: str, docs: List[dict], top_k: int) -> Tuple[List[di
             meta["rerank_error"] = f"HTTP {response.status_code}: {response.text}"
             return _sort_by_rank_score(docs_with_rank)[:top_k], meta
 
-        items = response.json().get("results", [])
+        res_json = response.json()
+        items = res_json.get("results") or res_json.get("data") or []
         reranked = []
         for item in items:
             idx = item.get("index")
