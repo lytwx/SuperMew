@@ -7,11 +7,10 @@ WORKDIR /app
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# 替换 apt 国内镜像源并安装基础系统库
+# 替换 apt 国内镜像源并安装基础系统库 (PostgreSQL libpq 开发库)
 RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list.d/debian.sources && \
     apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt-lists/*
 
@@ -19,10 +18,10 @@ RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.li
 COPY pyproject.toml README.md ./
 COPY backend/ backend/
 
-# 配置 PyPI 国内清华源 + CPU 版 PyTorch 源（切除 6.8GB 冗余的 NVIDIA CUDA 驱动包）
+# 配置 PyPI 国内清华源并安装轻量 Python 依赖 (无 PyTorch，纯粹轻量化)
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu -e .
+    pip install --no-cache-dir -e .
 
 EXPOSE 18000
 

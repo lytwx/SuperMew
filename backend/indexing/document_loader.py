@@ -4,7 +4,7 @@ import re
 import unicodedata
 from typing import Dict, List
 
-from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, UnstructuredExcelLoader
+from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # 编译非打印 C0/C1 控制字符的正则（保留常规排版字：\t, \n, \r）
@@ -203,7 +203,21 @@ class DocumentLoader:
             loader = Docx2txtLoader(file_path)
         elif file_lower.endswith((".xlsx", ".xls")):
             doc_type = "Excel"
-            loader = UnstructuredExcelLoader(file_path)
+            import openpyxl
+            from langchain_core.documents import Document
+            wb = openpyxl.load_workbook(file_path, data_only=True)
+            raw_docs = []
+            for sheetname in wb.sheetnames:
+                ws = wb[sheetname]
+                lines = []
+                for row in ws.iter_rows(values_only=True):
+                    row_str = " | ".join(str(cell) for cell in row if cell is not None).strip()
+                    if row_str:
+                        lines.append(row_str)
+                if lines:
+                    content = f"Sheet: {sheetname}\n" + "\n".join(lines)
+                    raw_docs.append(Document(page_content=content, metadata={"page": 1}))
+            return self._load_from_langchain_docs(raw_docs, file_path, filename, doc_type)
         elif file_lower.endswith((".html", ".htm")):
             doc_type = "HTML"
             from backend.indexing.html_processor import load_html_for_document_loader

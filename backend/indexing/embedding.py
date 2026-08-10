@@ -1,17 +1,17 @@
 """文本向量化服务 - 支持本地 CPU/GPU 加载或远程 HTTP API (如基于 Tailscale 部署的外部 embedding-service)"""
 import os
-import requests
-from langchain_huggingface import HuggingFaceEmbeddings
-
-
-def _create_dense_embedder() -> HuggingFaceEmbeddings:
-    model_name = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
-    device = os.getenv("EMBEDDING_DEVICE", "cpu")
-    return HuggingFaceEmbeddings(
-        model_name=model_name,
-        model_kwargs={"device": device},
-        encode_kwargs={"normalize_embeddings": True},
-    )
+def _create_dense_embedder():
+    try:
+        from langchain_huggingface import HuggingFaceEmbeddings
+        model_name = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
+        device = os.getenv("EMBEDDING_DEVICE", "cpu")
+        return HuggingFaceEmbeddings(
+            model_name=model_name,
+            model_kwargs={"device": device},
+            encode_kwargs={"normalize_embeddings": True},
+        )
+    except ImportError as e:
+        raise RuntimeError("本地未安装 HuggingFace 依赖，请在 .env 中配置 EMBEDDING_API_URL 使用远程向量服务。") from e
 
 
 class EmbeddingService:
