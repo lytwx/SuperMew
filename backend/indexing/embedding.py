@@ -1,5 +1,6 @@
 """文本向量化服务 - 支持本地 CPU/GPU 加载或远程 HTTP API (如基于 Tailscale 部署的外部 embedding-service)"""
 import os
+import requests
 def _create_dense_embedder():
     try:
         from langchain_huggingface import HuggingFaceEmbeddings
