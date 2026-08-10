@@ -11,7 +11,7 @@ services:
     env_file:
       - ../.env
     ports:
-      - "8000:8000"
+      - "18000:18000"
 
   # 前端 Vue3 + Nginx 容器
   frontend:
@@ -21,6 +21,6 @@ services:
       dockerfile: deploy/Dockerfile.frontend
     restart: always
     ports:
-      - "8080:80"
+      - "18089:18089"
     depends_on:
       - backend
