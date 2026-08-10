@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <!-- <div class="sidebar-header">
+    <div class="sidebar-header">
       <div class="logo-icon" aria-hidden="true">
         <i class="fa-solid fa-cat"></i>
       </div>
@@ -8,7 +8,7 @@
         <h1>喵喵助手</h1>
         <span>Knowledge Copilot</span>
       </div>
-    </div> -->
+    </div>
 
     <div class="workspace-switcher">
       <span class="workspace-orb" aria-hidden="true"></span>
