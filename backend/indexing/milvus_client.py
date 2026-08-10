@@ -134,7 +134,15 @@ class MilvusStore:
         self._run(_init)
 
     def insert(self, data: list[dict]):
-        return self._run(lambda client: client.insert(self.collection_name, data))
+        def _insert(client: MilvusClient):
+            res = client.insert(self.collection_name, data)
+            try:
+                client.flush(self.collection_name)
+            except Exception:
+                pass
+            return res
+
+        return self._run(_insert)
 
     def query(
         self,
