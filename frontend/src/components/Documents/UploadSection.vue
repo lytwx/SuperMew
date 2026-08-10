@@ -11,7 +11,7 @@
     <input
       ref="fileInputRef"
       type="file"
-      accept=".pdf,.doc,.docx,.xls,.xlsx,.html,.htm"
+      accept=".pdf,.doc,.docx,.xls,.xlsx,.html,.htm,.txt,.md"
       hidden
       @change="onFileSelect"
     />
@@ -28,7 +28,7 @@
       <span>
         {{ documentStore.selectedFile
           ? formatFileSize(documentStore.selectedFile.size)
-          : '或点击选择 PDF、Word、Excel、HTML 文件' }}
+          : '或点击选择 PDF、Word、Excel、Markdown、HTML、TXT 文件' }}
       </span>
     </button>
 

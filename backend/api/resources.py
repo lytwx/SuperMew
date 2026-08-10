@@ -74,6 +74,7 @@ def is_supported_document(filename: str) -> bool:
         or file_lower.endswith((".docx", ".doc"))
         or file_lower.endswith((".xlsx", ".xls"))
         or file_lower.endswith((".html", ".htm"))
+        or file_lower.endswith((".txt", ".md"))
     )
 
 
