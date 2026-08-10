@@ -3,9 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# 复制 package 配置并安装依赖
+# 复制 package 配置并安装依赖（配置 npm 国内镜像源）
 COPY frontend/package*.json ./
-RUN npm ci
+RUN npm config set registry https://registry.npmmirror.com && npm ci
 
 # 复制前端源码并构建 dist
 COPY frontend/ ./
