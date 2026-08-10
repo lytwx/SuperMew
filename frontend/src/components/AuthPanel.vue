@@ -27,13 +27,13 @@
     </div>
 
     <div class="auth-panel">
-      <div class="auth-panel-heading">
+      <!-- <div class="auth-panel-heading">
         <span class="auth-mini-logo"><i class="fa-solid fa-cat"></i></span>
         <div>
           <span class="auth-eyebrow">{{ authStore.authMode === 'login' ? 'Welcome back' : 'Create account' }}</span>
           <h1>{{ authStore.authMode === 'login' ? '登录喵喵助手' : '注册喵喵助手' }}</h1>
         </div>
-      </div>
+      </div> -->
       <p class="auth-description">
         {{ authStore.authMode === 'login'
           ? '进入你的私有知识空间，继续上一次对话。'
@@ -95,11 +95,11 @@
         </button>
       </form>
 
-      <div class="auth-divider"><span>或者</span></div>
+      <!-- <div class="auth-divider"><span>或者</span></div>
       <button class="auth-switch" type="button" @click="toggleAuthMode">
         {{ authStore.authMode === 'login' ? '还没有账号？创建一个' : '已有账号？返回登录' }}
       </button>
-      <p class="auth-footnote">登录即表示你理解 AI 输出需要经过必要的人工复核。</p>
+      <p class="auth-footnote">登录即表示你理解 AI 输出需要经过必要的人工复核。</p> -->
     </div>
   </section>
 </template>
