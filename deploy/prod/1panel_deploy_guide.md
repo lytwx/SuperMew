@@ -6,12 +6,12 @@
 
 ## 📂 部署目录文件结构
 
-所有应用构建与编排文件均位于项目 `deploy/` 目录中：
+所有应用构建与编排文件均位于项目 `deploy/prod/` 目录中：
 
-- `deploy/Dockerfile.frontend`：前端 Vue3 多阶段构建镜像。
-- `deploy/nginx.frontend.conf`：前端容器内部 Nginx 配置文件（内置 SSE 打字机反代与接口转发）。
-- `deploy/Dockerfile.backend`：后端 FastAPI Python 3.12 容器镜像。
-- `deploy/docker-compose.yml`：1Panel Compose 编排文件（管理 `supermew-frontend` 与 `supermew-backend`）。
+- `deploy/prod/Dockerfile.frontend`：前端 Vue3 多阶段构建镜像。
+- `deploy/prod/nginx.frontend.conf`：前端容器内部 Nginx 配置文件（内置 SSE 打字机反代与接口转发）。
+- `deploy/prod/Dockerfile.backend`：后端 FastAPI Python 3.12 容器镜像。
+- `deploy/prod/docker-compose.yml`：1Panel Compose 编排文件（管理 `supermew-frontend` 与 `supermew-backend`）。
 
 ---
 
@@ -27,7 +27,7 @@
 ### 第二步：在 1Panel 中拉起 Compose 编排
 1. 打开 1Panel 控制台，进入 **【容器】** -> **【编排】** -> **【创建编排】**。
 2. 填写名称：`supermew-app`。
-3. 选择构建路径，指向项目目录中的 `deploy/docker-compose.yml`。
+3. 选择构建路径，指向项目目录中的 `deploy/prod/docker-compose.yml`。
 4. 点击 **【确认】/【启动】**。1Panel 会自动拉起 `supermew-backend` (端口 18000) 与 `supermew-frontend` (端口 18089)。
 
 ### 第三步：在 1Panel 中配置域名与 HTTPS 证书

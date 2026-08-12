@@ -3,11 +3,11 @@ services:
   backend:
     container_name: supermew-backend
     build:
-      context: ..
-      dockerfile: deploy/Dockerfile.backend
+      context: ../..
+      dockerfile: deploy/prod/Dockerfile.backend
     restart: always
     env_file:
-      - ../.env
+      - ../../.env
     ports:
       - "18000:18000"
 
@@ -15,8 +15,8 @@ services:
   frontend:
     container_name: supermew-frontend
     build:
-      context: ..
-      dockerfile: deploy/Dockerfile.frontend
+      context: ../..
+      dockerfile: deploy/prod/Dockerfile.frontend
     restart: always
     ports:
       - "18089:18089"
